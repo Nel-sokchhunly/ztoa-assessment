@@ -11,9 +11,16 @@ export default function Index() {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: "white",
       }}
     >
-      <Text>Store Front</Text>
+      <Text>Items</Text>
+      {pokemon && (
+        <FlatList
+          data={pokemon.data}
+          renderItem={({ item }) => <Text>{item.name}</Text>}
+        />
+      )}
     </View>
   );
 }

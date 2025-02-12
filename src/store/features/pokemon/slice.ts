@@ -1,25 +1,35 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Pokemon } from "./types";
+import { Pokemon, PokemonList } from "./types";
 import { persistReducer } from "redux-persist";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { getPokemons } from "./actions";
+
 type InitialState = {
-  data: Pokemon[];
+  data: PokemonList | null;
+  loading: "idle" | "pending" | "succeeded" | "failed";
 };
 
 const pokemonSlice = createSlice({
   name: "pokemon",
   initialState: {
-    data: [
-      {
-        name: "test",
-        detail: {
-          data: "test",
-        },
-      },
-    ],
-  } as InitialState,
+    data: null,
+    loading: "idle",
+  } satisfies InitialState as InitialState,
   reducers: {}, // For non-async actions
+  extraReducers: (builder) => {
+    // For async actions
+    builder.addCase(getPokemons.pending, (state) => {
+      state.loading = "pending";
+    });
+    builder.addCase(getPokemons.fulfilled, (state, action) => {
+      state.data = action.payload;
+      state.loading = "succeeded";
+    });
+    builder.addCase(getPokemons.rejected, (state) => {
+      state.loading = "failed";
+    });
+  },
 });
 
 const persistConfig = {
