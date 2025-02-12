@@ -1,26 +1,28 @@
-import { FlatList, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import { selectAllPokemon } from "@/src/store/features/pokemon/selectors";
+import HeaderText from "@/src/component/common/HeaderText";
+import PokemonItem from "../component/PokenmonItem";
 
 export default function Index() {
   const pokemon = useSelector(selectAllPokemon);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "white",
-      }}
-    >
-      <Text>Items</Text>
+    <View style={styles.container}>
       {pokemon && (
         <FlatList
           data={pokemon.data}
-          renderItem={({ item }) => <Text>{item.name}</Text>}
+          renderItem={({ item }) => <PokemonItem data={item} />}
         />
       )}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+    padding: 5,
+  },
+});
