@@ -1,16 +1,35 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
+import {
+  persistStore,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
 
 import pokemonReducer from "./features/pokemon/slice";
 
-const store = configureStore({
-  reducer: {
-    pokemon: pokemonReducer,
-  },
+const reducers = combineReducers({
+  pokemon: pokemonReducer,
 });
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
-export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
+const store = configureStore({
+  reducer: reducers,
+  devTools: process.env.NODE_ENV !== "production",
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+});
 
-export default store;
+const persistor = persistStore(store);
+
+export type RootState = ReturnType<typeof store.getState>;
+export const useAppDispatch = useDispatch.withTypes<typeof store.dispatch>();
+
+export { store, persistor };
