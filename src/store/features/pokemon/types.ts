@@ -13,6 +13,10 @@ export type Pokemon = {
     };
   }[];
   sprites: { front_default: string };
+  species: {
+    name: string,
+    url: string
+  }
 };
 
 export type PokemonListApiResponse = {

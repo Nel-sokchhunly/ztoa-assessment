@@ -16,9 +16,8 @@ const pokemonSlice = createSlice({
     data: null,
     loading: "idle",
   } satisfies InitialState as InitialState,
-  reducers: {}, // For non-async actions
+  reducers: {},
   extraReducers: (builder) => {
-    // For async actions
     builder.addCase(getPokemons.pending, (state) => {
       state.loading = "pending";
     });

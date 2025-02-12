@@ -4,13 +4,13 @@ import { Pokemon, PokemonList, PokemonListApiResponse } from "./types";
 export const getPokemons = createAsyncThunk(
   "pokemon/getPokemons",
   async (
-    opts: { limit: number; offset: number } = {
-      limit: 100,
-      offset: 0,
-    }
+    {
+      limit = 100,
+      offset = 0,
+    }: { limit?: number; offset?: number }
   ) => {
     try {
-      const optsQuery = `?limit=${opts.limit}&offset=${opts.offset}`;
+      const optsQuery = `?limit=${limit}&offset=${offset}`;
       const response = await fetch(
         "https://pokeapi.co/api/v2/pokemon" + optsQuery
       );
@@ -26,6 +26,7 @@ export const getPokemons = createAsyncThunk(
         .filter((result) => result.status === "fulfilled")
         .map((result) => {
           const pokemon = result.value as Pokemon;
+
           return {
             id: pokemon.id,
             name: pokemon.name,
@@ -36,6 +37,7 @@ export const getPokemons = createAsyncThunk(
             sprites: {
               front_default: pokemon.sprites.front_default,
             },
+            species: pokemon.species
           };
         }) satisfies Pokemon[];
 

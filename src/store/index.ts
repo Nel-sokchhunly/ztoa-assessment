@@ -11,10 +11,12 @@ import {
 } from "redux-persist";
 
 import pokemonReducer from "@features/pokemon/slice";
+import pokemonDetailSheetReducer from '@features/pokemonDetailSheet/slice'
 import { getPokemons } from "@features/pokemon/actions";
 
 const reducers = combineReducers({
   pokemon: pokemonReducer,
+  pokemonDetailSheet: pokemonDetailSheetReducer
 });
 
 const store = configureStore({
@@ -28,7 +30,7 @@ const store = configureStore({
     }),
 });
 
-store.dispatch(getPokemons());
+store.dispatch(getPokemons({}));
 
 const persistor = persistStore(store);
 

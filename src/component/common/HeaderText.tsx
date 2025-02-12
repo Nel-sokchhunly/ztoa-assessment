@@ -6,7 +6,7 @@ export default function HeaderText({ children, style, ...props }: TextProps) {
     <Text
       style={[
         {
-          fontSize: 24,
+          fontSize: 16,
           fontWeight: "bold",
           color: "black",
         },
