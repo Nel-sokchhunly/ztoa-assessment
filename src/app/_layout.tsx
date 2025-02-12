@@ -13,7 +13,7 @@ export default function RootLayout() {
           <SafeAreaView style={{ flex: 1 }}>
             <Stack>
               <Stack.Screen
-                name="index"
+                name="(store)"
                 options={{
                   header: () => <StoreHeader />,
                 }}
