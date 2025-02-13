@@ -16,12 +16,16 @@ export default function RootLayout() {
           <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'grey' }}>
             <SafeAreaView style={{ flex: 1 }}>
               <BottomSheetModalProvider>
-                <Stack>
+                <Stack
+
+                  screenOptions={{
+                    header: () => <StoreHeader />
+                  }}>
                   <Stack.Screen
                     name="(store)"
-                    options={{
-                      header: () => <StoreHeader />,
-                    }}
+                  />
+                  <Stack.Screen
+                    name="checkout"
                   />
                 </Stack>
               </BottomSheetModalProvider>

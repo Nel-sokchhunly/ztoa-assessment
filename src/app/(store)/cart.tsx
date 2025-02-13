@@ -7,6 +7,7 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { useAppDispatch } from "@/src/store";
 import { ShoppingCartActions } from "@/src/store/features/shoppingCart/slice";
 import SubtitleText from "@/src/component/common/SubtitleText";
+import { router } from "expo-router";
 
 
 export default function CartPage() {
@@ -27,7 +28,7 @@ export default function CartPage() {
     const ids = selectedItems.map(item => item.id)
     Alert.alert(
       "Are you sure?",
-      undefined,
+      "Your selected items will be removed.",
       [
         { text: "Dismiss", style: "cancel" },
         {
@@ -38,6 +39,14 @@ export default function CartPage() {
         },
       ]
     );
+  }
+
+  const handleCheckout = () => {
+    // clear selected item as simulating purchased
+    const ids = selectedItems.map(item => item.id)
+    dispatch(ShoppingCartActions.removeFromCartByIds(ids))
+    // push to checkout route
+    router.push('/checkout')
   }
 
   return (
@@ -95,7 +104,7 @@ export default function CartPage() {
             }
           ]}
           disabled={isCartEmpty || isSelectedEmpty}
-          onPress={() => { }}>
+          onPress={() => handleCheckout()}>
           <Text style={styles.checkoutText}>Checkout</Text>
         </TouchableOpacity>
 
