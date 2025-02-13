@@ -81,22 +81,6 @@ export default function PokemonDetailSheet() {
             <SubtitleText>#{NumberPadding(detail.id, 3)}</SubtitleText>
           </View>
 
-          <View style={styles.priceWrapper}>
-            <HeaderText>Price:</HeaderText>
-
-            <View style={styles.price} >
-              <SubtitleText style={styles.priceText}>{detail.price}</SubtitleText>
-              <Image
-                source={pokeball}
-                style={{
-                  width: 16,
-                  height: 16
-                }}
-                resizeMode="contain"
-              />
-            </View>
-          </View>
-
           <View >
             <HeaderText style={{ marginLeft: 10, marginBottom: 10 }}>Abilities</HeaderText>
             <FlatList
@@ -197,20 +181,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
-  priceWrapper: {
-    flexDirection: 'row',
-    marginLeft: 10,
-    marginBottom: 10,
-    alignItems: 'flex-end'
-  },
-  price: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 10,
-  },
-  priceText: {
-    fontSize: 16,
-    color: 'black',
-    marginRight: 5,
-  }
 })

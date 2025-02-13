@@ -6,12 +6,14 @@ import { Carts, PokemonCartItem } from "./types";
 
 type State = {
 	cart: Carts
+	isAllSelected: boolean
 }
 
 const cartSlice = createSlice({
 	name: 'shoppingCartSlice',
 	initialState: {
-		cart: {}
+		cart: {},
+		isAllSelected: false
 	} satisfies State as State,
 	reducers: {
 		addToCart(state, payload: PayloadAction<Pokemon>) {
@@ -28,6 +30,7 @@ const cartSlice = createSlice({
 					amount: 1,
 					selected: false
 				}
+				state.isAllSelected = false // reset back to false because of new added
 
 				console.log('added', state.cart)
 				return
@@ -51,9 +54,28 @@ const cartSlice = createSlice({
 		clearCart(state) {
 			state.cart = {}
 		},
-
 		toggleSelectItemInCart(state, payload: PayloadAction<Pokemon['id']>) {
+
+			const updatedSelect = !state.cart[payload.payload].selected
+
+			// update selected state
 			state.cart[payload.payload].selected = !state.cart[payload.payload].selected
+
+			// if updatedSelect is true, check if all item is selected
+			if (updatedSelect) {
+				const isAllSelected = !Object.entries(state.cart).some(([_, value]) => value.selected === false)
+				console.log('is', isAllSelected)
+				state.isAllSelected = isAllSelected
+			} else {
+				// reset all selected state back to false
+				state.isAllSelected = false
+			}
+		},
+		toggleSelectAll(state) {
+			state.isAllSelected = !state.isAllSelected
+			Object.entries(state.cart).forEach(([key, value]) => {
+				state.cart[key].selected = state.isAllSelected
+			})
 		}
 
 	}

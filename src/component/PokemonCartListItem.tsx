@@ -7,6 +7,8 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { useAppDispatch } from "../store";
 import { ShoppingCartActions } from "../store/features/shoppingCart/slice";
 
+const pokeball = require('@/assets/images/pokeball.png')
+
 export default function PokemonCartListItem({ data }: { data: PokemonCartItem }) {
   const dispatch = useAppDispatch()
 
@@ -35,10 +37,13 @@ export default function PokemonCartListItem({ data }: { data: PokemonCartItem })
           style={styles.image}
         />
         <View style={styles.content}>
-          <HeaderText>{data.name}</HeaderText>
-          <SubtitleText>#{NumberPadding(data.id, 3)}</SubtitleText>
-
-          <Text>Price: {data.price}</Text>
+          <View style={styles.description}>
+            <HeaderText>{data.name}</HeaderText>
+            <SubtitleText>#{NumberPadding(data.id, 3)}</SubtitleText>
+          </View>
+          <View>
+            <HeaderText>x{data.amount}</HeaderText>
+          </View>
         </View>
       </View>
     </View>
@@ -67,14 +72,20 @@ const styles = StyleSheet.create({
   image: {
     height: 40,
     width: 40,
+    marginHorizontal: 10,
   },
   content: {
     flex: 1,
     minWidth: 100,
-    justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row',
+    paddingRight: 10,
+  },
+  description: {
+    flex: 1,
   },
   checkBox: {
-    margin: 10,
-  }
+    marginLeft: 10,
+  },
+
 });

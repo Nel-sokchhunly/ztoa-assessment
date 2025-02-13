@@ -30,8 +30,6 @@ export default function PokemonItem<T extends Pokemon>({ data }: { data: T }) {
         <HeaderText>{data.name}</HeaderText>
         <SubtitleText>#{NumberPadding(data.id, 3)}</SubtitleText>
       </View>
-
-
     </TouchableOpacity>
   );
 }
