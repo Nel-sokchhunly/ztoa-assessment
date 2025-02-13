@@ -6,7 +6,8 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import StoreHeader from "../component/header/StoreHeader";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { Toasts } from '@backpackapp-io/react-native-toast'
+import FlashMessage from "react-native-flash-message";
+
 
 export default function RootLayout() {
   return (
@@ -28,9 +29,9 @@ export default function RootLayout() {
                     name="checkout"
                   />
                 </Stack>
+                <FlashMessage position='top' />
               </BottomSheetModalProvider>
             </SafeAreaView>
-            <Toasts />
           </GestureHandlerRootView>
         </SafeAreaProvider>
       </PersistGate>

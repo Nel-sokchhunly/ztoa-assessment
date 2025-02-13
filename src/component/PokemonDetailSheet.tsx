@@ -9,11 +9,9 @@ import HeaderText from "./common/HeaderText";
 import SubtitleText from "./common/SubtitleText";
 import { NumberPadding } from "../utils/format";
 import { FlatList } from "react-native-gesture-handler";
-import { toast } from "@backpackapp-io/react-native-toast";
-import { ViewProps } from "react-native-svg/lib/typescript/fabric/utils";
 import { ShoppingCartActions } from "../store/features/shoppingCart/slice";
+import { showMessage } from "react-native-flash-message";
 
-const pokeball = require('@/assets/images/pokeball.png')
 
 export default function PokemonDetailSheet() {
   const dispatch = useAppDispatch()
@@ -36,14 +34,18 @@ export default function PokemonDetailSheet() {
 
   const handleAddToCart = () => {
     if (!detail) {
-      toast('Opps! Something is wrong!')
+      showMessage({
+        message: 'Ops! There is no data...',
+        type: 'danger'
+      })
       return
     }
 
     dispatch(ShoppingCartActions.addToCart(detail))
-    toast('Added to cart!', {
-      duration: 3000
-    }) // TODO: not working
+    showMessage({
+      message: 'Added To Cart!',
+      type: 'success'
+    })
     ref.current?.dismiss()
   }
 
