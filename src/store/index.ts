@@ -12,11 +12,13 @@ import {
 
 import pokemonReducer from "@features/pokemon/slice";
 import pokemonDetailSheetReducer from '@features/pokemonDetailSheet/slice'
+import shoppingCartReducer from "@features/shoppingCart/slice";
 import { getPokemons } from "@features/pokemon/actions";
 
 const reducers = combineReducers({
   pokemon: pokemonReducer,
-  pokemonDetailSheet: pokemonDetailSheetReducer
+  pokemonDetailSheet: pokemonDetailSheetReducer,
+  shoppingCart: shoppingCartReducer
 });
 
 const store = configureStore({

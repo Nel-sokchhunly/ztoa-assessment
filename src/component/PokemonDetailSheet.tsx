@@ -4,13 +4,14 @@ import { useCallback, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { selectActiveDetailPokemon, selectModalVisibility } from "@features/pokemonDetailSheet/selectors";
 import { useAppDispatch } from "../store";
-import { pokemonDetailActions } from "../store/features/pokemonDetailSheet/slice";
+import { PokemonDetailActions } from "../store/features/pokemonDetailSheet/slice";
 import HeaderText from "./common/HeaderText";
 import SubtitleText from "./common/SubtitleText";
 import { NumberPadding } from "../utils/format";
 import { FlatList } from "react-native-gesture-handler";
 import { toast } from "@backpackapp-io/react-native-toast";
 import { ViewProps } from "react-native-svg/lib/typescript/fabric/utils";
+import { ShoppingCartActions } from "../store/features/shoppingCart/slice";
 
 const pokeball = require('@/assets/images/pokeball.png')
 
@@ -30,15 +31,20 @@ export default function PokemonDetailSheet() {
   }, [modalVisibility])
 
   const handleDismiss = () => {
-    dispatch(pokemonDetailActions.hideBottomSheet())
+    dispatch(PokemonDetailActions.hideBottomSheet())
   }
 
   const handleAddToCart = () => {
+    if (!detail) {
+      toast('Opps! Something is wrong!')
+      return
+    }
+
+    dispatch(ShoppingCartActions.addToCart(detail))
     toast('Added to cart!', {
       duration: 3000
     }) // TODO: not working
     ref.current?.dismiss()
-    console.log('add to cart', detail)
   }
 
 
@@ -152,12 +158,13 @@ const styles = StyleSheet.create({
   abilityScroll: {
     width: '100%',
     flexDirection: 'row',
+    marginRight: 10
   },
   abilityCart: {
     backgroundColor: 'rgba(0,0,0,0.2)',
     borderRadius: 5,
     padding: 20,
-    marginHorizontal: 10
+    marginLeft: 10
   },
 
   actions: {

@@ -2,15 +2,15 @@ import { View, Image, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { Pokemon } from "@features/pokemon/types";
 import HeaderText from "./common/HeaderText";
 import { useAppDispatch } from "../store";
-import { pokemonDetailActions } from "../store/features/pokemonDetailSheet/slice";
+import { PokemonDetailActions } from "../store/features/pokemonDetailSheet/slice";
 import SubtitleText from "./common/SubtitleText";
 import { NumberPadding } from "../utils/format";
 
-export default function PokemonItem({ data }: { data: Pokemon }) {
+export default function PokemonItem<T extends Pokemon>({ data }: { data: T }) {
   const dispatch = useAppDispatch()
 
   const handleViewDetail = () => {
-    dispatch(pokemonDetailActions.showBottomSheet(data))
+    dispatch(PokemonDetailActions.showBottomSheet(data))
   }
 
   return (

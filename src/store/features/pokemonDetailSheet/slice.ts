@@ -24,5 +24,5 @@ const pokemonDetailSheet = createSlice({
 	}
 })
 
-export const pokemonDetailActions = pokemonDetailSheet.actions;
+export const PokemonDetailActions = pokemonDetailSheet.actions;
 export default pokemonDetailSheet.reducer;
