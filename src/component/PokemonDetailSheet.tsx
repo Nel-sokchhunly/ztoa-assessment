@@ -1,4 +1,4 @@
-import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
@@ -25,6 +25,10 @@ export default function PokemonDetailSheet() {
 
   const handleDismiss = () => {
     dispatch(pokemonDetailActions.hideBottomSheet())
+  }
+
+  const handleAddToCart = () => {
+    console.log('add to cart', detail)
   }
 
   if (detail === null) return
@@ -64,7 +68,12 @@ export default function PokemonDetailSheet() {
               </View>
             </TouchableOpacity>
           </View>
+
         </View>
+
+        <TouchableOpacity onPress={handleAddToCart}>
+          <Text>Add To Cart</Text>
+        </TouchableOpacity>
 
       </BottomSheetView>
     </BottomSheetModal>

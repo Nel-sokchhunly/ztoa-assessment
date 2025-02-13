@@ -26,6 +26,7 @@ export const getPokemons = createAsyncThunk(
         .filter((result) => result.status === "fulfilled")
         .map((result) => {
           const pokemon = result.value as Pokemon;
+          const price = Math.floor(Math.random() * 100); // simulate pricing
 
           return {
             id: pokemon.id,
@@ -37,7 +38,8 @@ export const getPokemons = createAsyncThunk(
             sprites: {
               front_default: pokemon.sprites.front_default,
             },
-            species: pokemon.species
+            species: pokemon.species,
+            price,
           };
         }) satisfies Pokemon[];
 
