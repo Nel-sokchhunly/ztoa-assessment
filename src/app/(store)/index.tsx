@@ -14,6 +14,7 @@ export default function StorePage() {
         <FlatList
           data={pokemon.data}
           style={{ flex: 1 }}
+          numColumns={2}
           keyExtractor={(item) => item.name}
           renderItem={({ item }) => <PokemonItem data={item} />}
         />
@@ -29,6 +30,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
-    padding: 10,
+
   },
 })

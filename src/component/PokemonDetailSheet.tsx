@@ -1,12 +1,18 @@
 import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { selectActiveDetailPokemon, selectModalVisibility } from "@features/pokemonDetailSheet/selectors";
 import { useAppDispatch } from "../store";
 import { pokemonDetailActions } from "../store/features/pokemonDetailSheet/slice";
 import HeaderText from "./common/HeaderText";
-import { Plus } from "lucide-react-native";
+import SubtitleText from "./common/SubtitleText";
+import { NumberPadding } from "../utils/format";
+import { FlatList } from "react-native-gesture-handler";
+import { toast } from "@backpackapp-io/react-native-toast";
+import { ViewProps } from "react-native-svg/lib/typescript/fabric/utils";
+
+const pokeball = require('@/assets/images/pokeball.png')
 
 export default function PokemonDetailSheet() {
   const dispatch = useAppDispatch()
@@ -28,52 +34,89 @@ export default function PokemonDetailSheet() {
   }
 
   const handleAddToCart = () => {
+    toast('Added to cart!', {
+      duration: 3000
+    }) // TODO: not working
+    ref.current?.dismiss()
     console.log('add to cart', detail)
   }
 
-  if (detail === null) return
 
+  const renderBackdrop = useCallback(
+    (props: any) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={1}
+      />
+    ),
+    []
+  );
+
+  if (detail === null) return
   return (
     <BottomSheetModal
       ref={ref}
-      backdropComponent={BottomSheetBackdrop}
-      snapPoints={['100%']}
+      backdropComponent={renderBackdrop}
       onDismiss={handleDismiss}
     >
       <BottomSheetView style={styles.view}>
         <View style={styles.header}>
-          <Image
-            source={{
-              uri: detail.sprites.front_default
-            }}
-            style={styles.headerLogo}
-          />
+          <View style={styles.headerLogoWrapper}>
+            <Image
+              source={{
+                uri: detail.sprites.front_default
+              }}
+              style={styles.headerLogo}
+            />
+          </View>
           <View style={styles.headerContent}>
-            <View style={styles.headerTitle}>
-              <HeaderText>{detail.name}</HeaderText>
-            </View>
-            <TouchableOpacity
-              onPress={handleDismiss}
-            >
-              <View
-                style={{
-                  width: 24,
-                  height: 24,
-                  borderRadius: 12,
-                  backgroundColor: 'red',
-                  transform: 'rotate(45deg)'
-                }}
-              >
-                <Plus size={24} />
-              </View>
-            </TouchableOpacity>
+            <HeaderText style={styles.headerText}>{detail.name}</HeaderText>
+            <SubtitleText>#{NumberPadding(detail.id, 3)}</SubtitleText>
           </View>
 
+          <View style={styles.priceWrapper}>
+            <HeaderText>Price:</HeaderText>
+
+            <View style={styles.price} >
+              <SubtitleText style={styles.priceText}>{detail.price}</SubtitleText>
+              <Image
+                source={pokeball}
+                style={{
+                  width: 16,
+                  height: 16
+                }}
+                resizeMode="contain"
+              />
+            </View>
+          </View>
+
+          <View >
+            <HeaderText style={{ marginLeft: 10, marginBottom: 10 }}>Abilities</HeaderText>
+            <FlatList
+              data={detail.abilities}
+              horizontal
+              renderItem={({ item }) => (
+                <View style={styles.abilityCart}>
+                  <SubtitleText >{item.ability.name}</SubtitleText>
+                </View>
+              )}
+              style={styles.abilityScroll}
+            />
+          </View>
         </View>
 
-        <TouchableOpacity onPress={handleAddToCart}>
-          <Text>Add To Cart</Text>
-        </TouchableOpacity>
+
+        {/*Actions*/}
+        <View style={styles.actions}>
+          <TouchableOpacity style={styles.actionAddToCart} onPress={handleAddToCart}>
+            <Text style={styles.addToCartText}>Add To Cart</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.actionDismiss} onPress={handleDismiss}>
+            <Text style={styles.dismissText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+
 
       </BottomSheetView>
     </BottomSheetModal>
@@ -85,19 +128,82 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   header: {
+    flex: 1,
     display: 'flex',
-    flexDirection: 'row',
   },
+  headerLogoWrapper: {
+    width: '100%',
+    alignItems: 'center'
+
+  },
+
   headerLogo: {
-    height: 100,
-    width: 100,
+    height: 200,
+    width: 200,
   },
   headerContent: {
-    flex: 1,
-    flexDirection: 'row',
-    paddingRight: 10
+    width: '100%',
+    alignItems: 'center'
   },
-  headerTitle: {
-    flex: 1
+  headerText: {
+    fontSize: 32,
+  },
+
+  abilityScroll: {
+    width: '100%',
+    flexDirection: 'row',
+  },
+  abilityCart: {
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    borderRadius: 5,
+    padding: 20,
+    marginHorizontal: 10
+  },
+
+  actions: {
+    display: 'flex',
+    padding: 10,
+  },
+  actionAddToCart: {
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    marginBottom: 10,
+    backgroundColor: '#FCCF00',
+  },
+  addToCartText: {
+    color: 'rgba(0,0,0,0.8)',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  actionDismiss: {
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.5)',
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  dismissText: {
+    color: 'rgba(0,0,0,0.8)',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  priceWrapper: {
+    flexDirection: 'row',
+    marginLeft: 10,
+    marginBottom: 10,
+    alignItems: 'flex-end'
+  },
+  price: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 10,
+  },
+  priceText: {
+    fontSize: 16,
+    color: 'black',
+    marginRight: 5,
   }
 })

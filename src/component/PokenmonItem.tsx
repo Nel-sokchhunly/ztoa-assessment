@@ -3,6 +3,8 @@ import { Pokemon } from "@features/pokemon/types";
 import HeaderText from "./common/HeaderText";
 import { useAppDispatch } from "../store";
 import { pokemonDetailActions } from "../store/features/pokemonDetailSheet/slice";
+import SubtitleText from "./common/SubtitleText";
+import { NumberPadding } from "../utils/format";
 
 export default function PokemonItem({ data }: { data: Pokemon }) {
   const dispatch = useAppDispatch()
@@ -12,10 +14,12 @@ export default function PokemonItem({ data }: { data: Pokemon }) {
   }
 
   return (
-    <View style={[
-      styles.container,
-
-    ]}>
+    <TouchableOpacity
+      style={[
+        styles.container,
+      ]}
+      onPress={handleViewDetail}
+    >
       <Image
         source={{
           uri: data.sprites.front_default,
@@ -24,29 +28,28 @@ export default function PokemonItem({ data }: { data: Pokemon }) {
       />
       <View style={styles.content}>
         <HeaderText>{data.name}</HeaderText>
-
-        <TouchableOpacity onPress={handleViewDetail}>
-          <Text>Detail</Text>
-        </TouchableOpacity>
-
+        <SubtitleText>#{NumberPadding(data.id, 3)}</SubtitleText>
       </View>
 
 
-    </View>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    width: 'auto',
+    flex: 1,
     padding: 2,
     display: "flex",
+    flexWrap: 'wrap',
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: 'center',
     borderColor: "rgba(0,0,0,0.1)",
     borderWidth: 1,
     borderRadius: 5,
-    marginBottom: 5,
+    marginHorizontal: 5,
+    marginVertical: 5,
   },
   image: {
     height: 100,
@@ -54,6 +57,8 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    height: '100%',
+    minWidth: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
