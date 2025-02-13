@@ -1,4 +1,5 @@
-import { View, Image, StyleSheet, TouchableOpacity, Text } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import { Image } from 'expo-image'
 import { Pokemon } from "@features/pokemon/types";
 import HeaderText from "./common/HeaderText";
 import { useAppDispatch } from "../store";

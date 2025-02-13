@@ -48,7 +48,7 @@ export const getPokemons = createAsyncThunk(
         data: items,
       } satisfies PokemonList;
     } catch (err) {
-      return null;
+      throw Error(err)
     }
   }
 );

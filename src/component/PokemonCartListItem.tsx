@@ -1,4 +1,5 @@
-import { View, Image, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
+import { Image } from 'expo-image'
 import HeaderText from "./common/HeaderText";
 import SubtitleText from "./common/SubtitleText";
 import { NumberPadding } from "../utils/format";
