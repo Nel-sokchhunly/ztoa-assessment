@@ -12,7 +12,6 @@ export type Pokemon = {
       url: string;
     };
   }[];
-  price: number;
   sprites: { front_default: string };
   species: {
     name: string,

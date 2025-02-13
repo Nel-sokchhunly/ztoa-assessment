@@ -16,7 +16,8 @@ const pokemonSlice = createSlice({
     data: null,
     loading: "idle",
   } satisfies InitialState as InitialState,
-  reducers: {},
+  reducers: {
+  },
   extraReducers: (builder) => {
     builder.addCase(getPokemons.pending, (state) => {
       state.loading = "pending";
@@ -38,4 +39,5 @@ const persistConfig = {
 
 const pokemonReducer = persistReducer(persistConfig, pokemonSlice.reducer);
 
+export const PokemonActions = pokemonSlice.actions
 export default pokemonReducer;

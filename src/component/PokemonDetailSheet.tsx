@@ -4,15 +4,14 @@ import { useCallback, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { selectActiveDetailPokemon, selectModalVisibility } from "@features/pokemonDetailSheet/selectors";
 import { useAppDispatch } from "../store";
-import { pokemonDetailActions } from "../store/features/pokemonDetailSheet/slice";
+import { PokemonDetailActions } from "../store/features/pokemonDetailSheet/slice";
 import HeaderText from "./common/HeaderText";
 import SubtitleText from "./common/SubtitleText";
 import { NumberPadding } from "../utils/format";
 import { FlatList } from "react-native-gesture-handler";
-import { toast } from "@backpackapp-io/react-native-toast";
-import { ViewProps } from "react-native-svg/lib/typescript/fabric/utils";
+import { ShoppingCartActions } from "../store/features/shoppingCart/slice";
+import { showMessage } from "react-native-flash-message";
 
-const pokeball = require('@/assets/images/pokeball.png')
 
 export default function PokemonDetailSheet() {
   const dispatch = useAppDispatch()
@@ -30,15 +29,24 @@ export default function PokemonDetailSheet() {
   }, [modalVisibility])
 
   const handleDismiss = () => {
-    dispatch(pokemonDetailActions.hideBottomSheet())
+    dispatch(PokemonDetailActions.hideBottomSheet())
   }
 
   const handleAddToCart = () => {
-    toast('Added to cart!', {
-      duration: 3000
-    }) // TODO: not working
+    if (!detail) {
+      showMessage({
+        message: 'Ops! There is no data...',
+        type: 'danger'
+      })
+      return
+    }
+
+    dispatch(ShoppingCartActions.addToCart(detail))
+    showMessage({
+      message: 'Added To Cart!',
+      type: 'success'
+    })
     ref.current?.dismiss()
-    console.log('add to cart', detail)
   }
 
 
@@ -73,22 +81,6 @@ export default function PokemonDetailSheet() {
           <View style={styles.headerContent}>
             <HeaderText style={styles.headerText}>{detail.name}</HeaderText>
             <SubtitleText>#{NumberPadding(detail.id, 3)}</SubtitleText>
-          </View>
-
-          <View style={styles.priceWrapper}>
-            <HeaderText>Price:</HeaderText>
-
-            <View style={styles.price} >
-              <SubtitleText style={styles.priceText}>{detail.price}</SubtitleText>
-              <Image
-                source={pokeball}
-                style={{
-                  width: 16,
-                  height: 16
-                }}
-                resizeMode="contain"
-              />
-            </View>
           </View>
 
           <View >
@@ -152,12 +144,13 @@ const styles = StyleSheet.create({
   abilityScroll: {
     width: '100%',
     flexDirection: 'row',
+    marginRight: 10
   },
   abilityCart: {
     backgroundColor: 'rgba(0,0,0,0.2)',
     borderRadius: 5,
     padding: 20,
-    marginHorizontal: 10
+    marginLeft: 10
   },
 
   actions: {
@@ -190,20 +183,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
-  priceWrapper: {
-    flexDirection: 'row',
-    marginLeft: 10,
-    marginBottom: 10,
-    alignItems: 'flex-end'
-  },
-  price: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 10,
-  },
-  priceText: {
-    fontSize: 16,
-    color: 'black',
-    marginRight: 5,
-  }
 })
