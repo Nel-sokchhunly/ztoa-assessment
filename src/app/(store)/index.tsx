@@ -35,7 +35,9 @@ export default function StorePage() {
         <HeaderText>Opss! Something Went Wrong!</HeaderText>
 
         <TouchableOpacity onPress={handleRefetchData}>
-          Reload
+          <SubtitleText>
+            Reload
+          </SubtitleText>
         </TouchableOpacity>
       </View>
     )
